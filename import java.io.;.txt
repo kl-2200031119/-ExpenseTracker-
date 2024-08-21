@@ -1,0 +1,24 @@
+import java.io.*;
+import java.util.ArrayList;
+
+public class FileHandler {
+
+    public static void saveUserData(UserManager userManager) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("users.dat"))) {
+            oos.writeObject(userManager);
+        } catch (IOException e) {
+            System.out.println("Error saving user data.");
+            e.printStackTrace();
+        }
+    }
+
+    public static UserManager loadUserData() {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("users.dat"))) {
+            return (UserManager) ois.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Error loading user data.");
+            e.printStackTrace();
+            return new UserManager();
+        }
+    }
+}

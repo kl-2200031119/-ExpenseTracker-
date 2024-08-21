@@ -1,0 +1,39 @@
+import java.util.Date;
+import java.util.Scanner;
+
+public class ExpenseManager {
+    private User user;
+
+    public ExpenseManager(User user) {
+        this.user = user;
+    }
+
+    public void addExpense() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter date (yyyy-mm-dd): ");
+        String dateInput = scanner.nextLine();
+        Date date = java.sql.Date.valueOf(dateInput);
+
+        System.out.print("Enter category: ");
+        String category = scanner.nextLine();
+
+        System.out.print("Enter amount: ");
+        double amount = scanner.nextDouble();
+        scanner.nextLine(); // consume the newline
+
+        System.out.print("Enter description: ");
+        String description = scanner.nextLine();
+
+        Expense expense = new Expense(date, category, amount, description);
+        user.addExpense(expense);
+
+        System.out.println("Expense added successfully.");
+    }
+
+    public void listExpenses() {
+        for (Expense expense : user.getExpenses()) {
+            System.out.println(expense);
+        }
+    }
+}

@@ -1,0 +1,29 @@
+import java.util.HashMap;
+
+public class UserManager {
+    private HashMap<String, User> users;
+
+    public UserManager() {
+        this.users = new HashMap<>();
+    }
+
+    public boolean registerUser(String username, String password) {
+        if (users.containsKey(username)) {
+            System.out.println("Username already taken. Please choose another.");
+            return false;
+        }
+        users.put(username, new User(username, password));
+        return true;
+    }
+
+    public User loginUser(String username, String password) {
+        User user = users.get(username);
+        if (user != null && user.checkPassword(password)) {
+            System.out.println("Login successful!");
+            return user;
+        } else {
+            System.out.println("Invalid username or password.");
+            return null;
+        }
+    }
+}

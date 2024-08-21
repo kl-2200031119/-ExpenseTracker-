@@ -1,0 +1,66 @@
+import java.util.Scanner;
+
+public class ExpenseTrackerApp {
+
+    public static void main(String[] args) {
+        UserManager userManager = FileHandler.loadUserData();
+        Scanner scanner = new Scanner(System.in);
+        User currentUser = null;
+
+        while (currentUser == null) {
+            System.out.println("1. Register");
+            System.out.println("2. Login");
+            System.out.print("Choose an option: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // consume the newline
+
+            System.out.print("Enter username: ");
+            String username = scanner.nextLine();
+
+            System.out.print("Enter password: ");
+            String password = scanner.nextLine();
+
+            if (choice == 1) {
+                if (userManager.registerUser(username, password)) {
+                    System.out.println("Registration successful!");
+                }
+            } else if (choice == 2) {
+                currentUser = userManager.loginUser(username, password);
+            }
+        }
+
+        ExpenseManager expenseManager = new ExpenseManager(currentUser);
+
+        boolean running = true;
+        while (running) {
+            System.out.println("\n1. Add Expense");
+            System.out.println("2. List Expenses");
+            System.out.println("3. Display Category Summation");
+            System.out.println("4. Save & Exit");
+            System.out.print("Choose an option: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // consume the newline
+
+            switch (choice) {
+                case 1:
+                    expenseManager.addExpense();
+                    break;
+                case 2:
+                    expenseManager.listExpenses();
+                    break;
+                case 3:
+                    expenseManager.displayCategorySummation();
+                    break;
+                case 4:
+                    FileHandler.saveUserData(userManager);
+                    running = false;
+                    System.out.println("Data saved. Exiting.");
+                    break;
+                default:
+                    System.out.println("Invalid option. Try again.");
+            }
+        }
+
+        scanner.close();
+    }
+}
